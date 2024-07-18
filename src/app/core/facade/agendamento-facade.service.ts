@@ -11,11 +11,11 @@ export class AgendamentoFacade {
   agendamentoService = inject(AgendamentoService)
   constructor() { }
 
-  cadastrarAgendamento(cadastro: CadastroAgendamento): Observable<CadastroAgendamento>{
+  cadastrarAgendamento(cadastro: CadastroAgendamentoModel): Observable<CadastroAgendamento>{
     const cadastroConvertido: CadastroAgendamentoModel = {
       agendamento: {
-                    data: cadastro.agendamento.data.toISOString(),
-                    horario: cadastro.agendamento.horario
+                    data: new Date(cadastro.agendamento.data).toISOString(),
+                    horario: cadastro.agendamento.horario+":00"
                 },
       paciente: {...cadastro.paciente}
     }

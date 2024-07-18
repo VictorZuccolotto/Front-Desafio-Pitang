@@ -1,4 +1,4 @@
-import { PacienteInfo } from "./paciente"
+import { PacienteInfo, PacienteInfoModel } from "./paciente"
 
 export type AgendamentoModel = {
     data : string
@@ -19,5 +19,5 @@ export type CadastroAgendamento = {
 
 export type CadastroAgendamentoModel = {
     agendamento: AgendamentoModel
-    paciente: PacienteInfo
+    paciente: PacienteInfoModel
 }

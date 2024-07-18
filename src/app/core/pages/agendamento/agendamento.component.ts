@@ -9,6 +9,7 @@ import { LocalStorageService } from '../../services/local-storage.service';
 import { PacienteInfo } from '../../shared/types/paciente';
 import { CadastroAgendamento, CadastroAgendamentoModel } from '../../shared/types/agendamento';
 import { AgendamentoFacade } from '../../facade/agendamento-facade.service';
+import { ObserverService } from '../../services/observer.service';
 
 @Component({
   selector: 'app-agendamento',
@@ -23,6 +24,7 @@ import { AgendamentoFacade } from '../../facade/agendamento-facade.service';
 export class AgendamentoComponent implements OnInit{
   formBuilder = inject(FormBuilder)
   localStorage = inject(LocalStorageService)
+  observerService = inject(ObserverService)
   agendamentoFacade = inject(AgendamentoFacade)
   paciente!:PacienteInfo | null
 
@@ -34,8 +36,17 @@ export class AgendamentoComponent implements OnInit{
   });
 
   ngOnInit(): void {
-    this.paciente  = this.localStorage.getPacienteInfo()
-    if(this.paciente){
+    this.PreencherFormComPacienteInfo();
+    this.observerService.agendamento$.subscribe({
+      next(value) {
+          console.log(value)
+      },
+    })
+  }
+
+  private PreencherFormComPacienteInfo() {
+    this.paciente = this.localStorage.getPacienteInfo();
+    if (this.paciente) {
       this.cadastroAgendamentoForm.patchValue({
         pacienteNome: this.paciente.nome,
         pacienteDataNascimento: this.paciente.dataNascimento.toString()
@@ -59,9 +70,10 @@ export class AgendamentoComponent implements OnInit{
       }
       this.agendamentoFacade.cadastrarAgendamento(cadastro).subscribe({
         //loading service
-        next(value) {
+        next: (value) => {
             console.log(value)
-            //colocar no localStorage e BehaviorSubject
+            this.observerService.addAgendamento(value.agendamento)
+            this.localStorage.setPacienteInfo(value.paciente)
             //toastService
         },
         error(err) {

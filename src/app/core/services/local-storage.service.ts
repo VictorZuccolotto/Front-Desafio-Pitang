@@ -17,11 +17,11 @@ export class LocalStorageService {
     return null;
   }
 
-  setPacienteInfo(paciente: PacienteInfo){
+  setPacienteInfo(paciente: PacienteInfo):void{
     localStorage.setItem('pacienteInfo', JSON.stringify(paciente))
   }
 
-  setAgendamentos(agendamentos: Agendamento[]){
+  setAgendamentos(agendamentos: Agendamento[]):void{
     localStorage.setItem('agendamentos', JSON.stringify(agendamentos))
   }
 

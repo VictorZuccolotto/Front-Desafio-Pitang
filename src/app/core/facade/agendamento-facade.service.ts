@@ -15,7 +15,7 @@ export class AgendamentoFacade {
     const cadastroConvertido: CadastroAgendamentoModel = {
       agendamento: {
                     data: new Date(cadastro.agendamento.data).toISOString(),
-                    horario: cadastro.agendamento.horario+":00"
+                    horario: cadastro.agendamento.horario.split(':').length==3 ? cadastro.agendamento.horario : cadastro.agendamento.horario+":00"
                 },
       paciente: {...cadastro.paciente}
     }
@@ -37,6 +37,7 @@ export class AgendamentoFacade {
         return horarios.map(horario => ({
           ...horario,
           data: new Date(horario.data),
+          // horario: 
         }));
       }),
       catchError(error => {

@@ -28,7 +28,7 @@
     <div class="mb-3">
         <mat-form-field>
             <mat-label>Horario</mat-label>
-            <input type="time" matInput formControlName="horarioAgendamento">
+            <input type="time" matInput [min]="6" [max]="19" formControlName="horarioAgendamento">
         </mat-form-field>
     </div>
     <div class="mb-3">

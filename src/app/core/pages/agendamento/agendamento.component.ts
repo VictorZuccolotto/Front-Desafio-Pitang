@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -41,12 +41,12 @@ export class AgendamentoComponent implements OnInit{
   });
 
   ngOnInit(): void {
+    this.getPacienteInfo();
     this.PreencherFormComParametros();
     this.PreencherFormComPacienteInfo();
   }
 
   private PreencherFormComPacienteInfo() {
-    this.paciente = this.localStorage.getPacienteInfo();
     if (this.paciente) {
       this.cadastroAgendamentoForm.patchValue({
         pacienteNome: this.paciente.nome,
@@ -72,9 +72,16 @@ export class AgendamentoComponent implements OnInit{
     });
   }
 
+  private getPacienteInfo(){
+    this.observerService.paciente$.subscribe({
+      next:(value) => {
+          this.paciente = value;
+      },
+    })
+  }
+
   onSubmit(){
     if(this.cadastroAgendamentoForm.valid){
-      // console.log(this.cadastroAgendamentoForm.value)
       const cadastro: CadastroAgendamentoModel = {
         agendamento: {
           data: this.cadastroAgendamentoForm.value.dataAgendamento!,
@@ -91,7 +98,7 @@ export class AgendamentoComponent implements OnInit{
         next: (value) => {
             console.log(value)
             this.observerService.addAgendamento(value.agendamento)
-            this.localStorage.setPacienteInfo(value.paciente)
+            this.observerService.setPaciente(value.paciente)
             this.snackBar.success('Agendamento realizado com sucesso!')
         },
         error(err) {

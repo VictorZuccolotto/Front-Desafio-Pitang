@@ -15,14 +15,15 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class MeusAgendamentosComponent implements OnInit{
   pacienteFacade = inject(PacienteFacade)
-  agendamentos!: Agendamento[]
+  agendamentos: Agendamento[] = [];
   displayedColumns: string[] = ['data', 'horario', 'status', 'realizado'];
 
   ngOnInit(): void {
     this.pacienteFacade.ListarMeusAgendamentos().subscribe({
       next:(value) => {
           this.agendamentos = value
-      },
+      }
     });
   }
+
 }

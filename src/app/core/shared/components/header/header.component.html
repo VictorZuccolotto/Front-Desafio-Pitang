@@ -1,18 +1,29 @@
-<header class="row mx-0">
-    <div class="col-6 d-flex align-items-center">
-        <h1 class="text-center">Agenda de vacinação para o Covid-19</h1>
-    </div>
-    <nav class="col-6 d-flex justify-content-end align-items-center">
-        <ul class="list-inline">
-            <li class="list-inline-item me-4">
-                Olá, Fulano
-            </li>
-            <li class="list-inline-item me-4">
-                <a href="#">Meus agendamentos</a>
-            </li>
-            <li class="list-inline-item me-4">
-                <span>🔔</span> <!-- Ícone de notificação -->
-            </li>
-        </ul>
-    </nav>
+<header class="mx-0">
+    <div class="container" style="justify-content: space-between">
+            <div class="row">
+                <div class="col">
+                    <a routerLink="" class="nav-link">
+                        <h1 class="">Agendamento para vacina do Covid-19</h1>
+                    </a>
+                </div>
+                <div class="col">
+                    <div class="row align-items-center justify-content-end text-center" style="height: 100%;">
+                        @if(paciente){
+                            <span class="col-3">Olá, {{paciente.nome}}</span>
+                        }
+                        <span class="col-3">
+                            <a routerLink="agendamento" class="nav-link">
+                                Agendar
+                            </a>
+                        </span>
+                        <span class="col-3">
+                            <a routerLink="meus-agendamentos" class="nav-link">
+                                Meus agendamentos
+                            </a>
+                        </span>
+                        <span class="col-3"><app-notification-nav-item></app-notification-nav-item></span>
+                    </div>
+                </div>
+            </div>
+</div>
 </header>

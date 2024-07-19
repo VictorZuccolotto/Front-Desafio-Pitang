@@ -29,6 +29,6 @@ export class PacienteFacade {
         })
       );
     else
-      throw Error("Voce não está \"Logado\"");
+      return of([]);
   }
 }

@@ -11,6 +11,7 @@ import { Agendamento, AgendamentoModel, CadastroAgendamento, CadastroAgendamento
 import { AgendamentoFacade } from '../../facade/agendamento-facade.service';
 import { ObserverService } from '../../services/observer.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-agendamento',
@@ -27,6 +28,8 @@ export class AgendamentoComponent implements OnInit{
   localStorage = inject(LocalStorageService)
   observerService = inject(ObserverService)
   agendamentoFacade = inject(AgendamentoFacade)
+  snackBar = inject(SnackbarService)
+
   route = inject(ActivatedRoute)
   paciente!:PacienteInfo | null
 
@@ -89,7 +92,7 @@ export class AgendamentoComponent implements OnInit{
             console.log(value)
             this.observerService.addAgendamento(value.agendamento)
             this.localStorage.setPacienteInfo(value.paciente)
-            //toastService
+            this.snackBar.success('Agendamento realizado com sucesso!')
         },
         error(err) {
             console.log(err.error.errors)

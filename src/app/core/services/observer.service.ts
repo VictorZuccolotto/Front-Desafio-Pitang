@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Agendamento } from '../shared/types/agendamento';
+import { PacienteInfo } from '../shared/types/paciente';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,18 @@ export class ObserverService {
   private agendamentosSubject = new BehaviorSubject<Agendamento[]>([]);
   public agendamento$ = this.agendamentosSubject.asObservable();
 
+  private pacienteSubject = new BehaviorSubject<PacienteInfo | null>(null);
+  public paciente$ = this.pacienteSubject.asObservable();
+
+
   constructor() {
     const agendamentos: Agendamento[] | null = this.localStorageService.getAgendamentos();
     if(agendamentos){
       this.agendamentosSubject.next(agendamentos);
+    }
+    const paciente: PacienteInfo | null = this.localStorageService.getPacienteInfo();
+    if(paciente){
+      this.pacienteSubject.next(paciente);
     }
    }
 
@@ -27,6 +36,13 @@ export class ObserverService {
     return this.agendamentosSubject.value;
   }
 
+  setPaciente(paciente: PacienteInfo){
+    this.pacienteSubject.next(paciente)
+    this.localStorageService.setPacienteInfo(this.getPaciente()!)
+  }
 
+  getPaciente():PacienteInfo | null{
+    return this.pacienteSubject.value;
+  }
   
 }

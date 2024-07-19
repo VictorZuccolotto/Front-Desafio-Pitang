@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import {MatBadgeModule} from '@angular/material/badge';
-import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ObserverService } from '../../../services/observer.service';
 
@@ -18,7 +17,7 @@ export class NotificationNavItemComponent implements OnInit{
   constructor(){}
   ngOnInit(): void {
     this.observerService.agendamento$.subscribe({
-      next:(value) => {
+      next:() => {
         this.quantidadeAgendamentos = this.observerService.getAgendamentos().length
       },
     })

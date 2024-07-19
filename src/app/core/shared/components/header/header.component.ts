@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink, RouterModule } from '@angular/router';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { PacienteInfo } from '../../types/paciente';
+import { ObserverService } from '../../../services/observer.service';
 
 @Component({
   selector: 'app-header',
@@ -15,10 +16,13 @@ import { PacienteInfo } from '../../types/paciente';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit{
-
-  localStorageService = inject(LocalStorageService)
+  observerService = inject(ObserverService)
   paciente!: PacienteInfo | null;
   ngOnInit(): void {
-    this.paciente = this.localStorageService.getPacienteInfo();
+    this.observerService.paciente$.subscribe({
+      next:(value) => {
+          this.paciente = value
+      },
+    })
   }
 }

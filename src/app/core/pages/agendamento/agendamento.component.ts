@@ -7,9 +7,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { PacienteInfo } from '../../shared/types/paciente';
-import { CadastroAgendamento, CadastroAgendamentoModel } from '../../shared/types/agendamento';
+import { Agendamento, AgendamentoModel, CadastroAgendamento, CadastroAgendamentoModel } from '../../shared/types/agendamento';
 import { AgendamentoFacade } from '../../facade/agendamento-facade.service';
 import { ObserverService } from '../../services/observer.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-agendamento',
@@ -26,6 +27,7 @@ export class AgendamentoComponent implements OnInit{
   localStorage = inject(LocalStorageService)
   observerService = inject(ObserverService)
   agendamentoFacade = inject(AgendamentoFacade)
+  route = inject(ActivatedRoute)
   paciente!:PacienteInfo | null
 
   cadastroAgendamentoForm = this.formBuilder.group({
@@ -36,12 +38,8 @@ export class AgendamentoComponent implements OnInit{
   });
 
   ngOnInit(): void {
+    this.PreencherFormComParametros();
     this.PreencherFormComPacienteInfo();
-    this.observerService.agendamento$.subscribe({
-      next(value) {
-          console.log(value)
-      },
-    })
   }
 
   private PreencherFormComPacienteInfo() {
@@ -52,6 +50,23 @@ export class AgendamentoComponent implements OnInit{
         pacienteDataNascimento: this.paciente.dataNascimento.toString()
       });
     }
+  }
+
+  private PreencherFormComParametros(){
+    this.route.queryParams.subscribe(params => {
+      const data = params['data'];
+      const horario = params['horario'];
+      if(data){
+        this.cadastroAgendamentoForm.patchValue({
+          dataAgendamento: data,
+        });
+      }
+      if(horario){
+        this.cadastroAgendamentoForm.patchValue({
+          horarioAgendamento: horario,
+        });
+      }
+    });
   }
 
   onSubmit(){

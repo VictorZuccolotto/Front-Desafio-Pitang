@@ -19,8 +19,8 @@ export class SnackbarService {
 
   error(message:string):void{
     this.snackBar.open(message,'',{
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
       duration : 3000,
       panelClass: ['snackbar-error']
     })

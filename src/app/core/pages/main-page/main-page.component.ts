@@ -5,65 +5,38 @@ import { CadastroAgendamento } from '../../shared/types/agendamento';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { PacienteInfo } from '../../shared/types/paciente';
 import { PacienteFacade } from '../../facade/paciente-facade.service';
+import { MatTableModule } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { Horario } from '../../shared/types/horarios';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
   standalone: true,
-  imports: [],
+  imports: [MatTableModule, DatePipe, MatIconModule],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.css'
 })
 export class MainPageComponent implements OnInit{
-  
+  router = inject(Router)
   agendamentoService = inject(AgendamentoFacade)
-  pacienteService = inject(PacienteFacade)
-  localStorageService = inject(LocalStorageService)
-  
+  horarios: Horario[] = [];
+  displayedColumns: string[] = ['data', 'horario', 'disponivel', 'quantidadePacientes'];
+
+
   ngOnInit(): void {
-    const data = new Date();
-    console.log(data.toISOString());
-    // data.setDate(data.getDate() - 1);
-    // console.log(data.toISOString());
-    // this.agendamentoService.ListarHorariosDeDia(data).subscribe({
-    //   next(value) {
-    //       console.log(value)
-    //   },
-    // })
-    const cadastro: CadastroAgendamento = {
-      agendamento:{
-        data: new Date(),
-        horario: "10:00:00"
+    this.agendamentoService.ListarHorariosDeDia(new Date).subscribe({
+      next:(value) => {
+          this.horarios = value;
       },
-      paciente: {
-        id: 4,
-        nome: 'Victor',
-        dataNascimento: new Date("2000-04-22")
-      }
+    })
+  }
+
+  onRowClick(linha:Horario){
+    if(linha.disponivel){
+      this.router.navigate(['agendamento'],{queryParams: {data: linha.data.toISOString(), horario: linha.horario}})
     }
-    console.log(cadastro)
-    // this.agendamentoService.cadastrarAgendamento(cadastro).subscribe({
-    //   next(value) {
-    //       console.log(value)
-    //   },
-    //   error(err) {
-    //       console.log(err)
-    //   },
-    // });
-
-    // const paciente:PacienteInfo = {
-    //   id: 4,
-    //   nome: "Victor",
-    //   dataNascimento: new Date("2000-04-22T00:00:00.000Z")
-    // }
-
-    // this.localStorageService.setPacienteInfo(paciente);
-
-
-    // this.pacienteService.ListarMeusAgendamentos().subscribe({
-    //   next(value) {
-    //       console.log(value)
-    //   },
-    // })
   }
 
 }

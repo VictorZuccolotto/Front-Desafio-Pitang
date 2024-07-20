@@ -1,0 +1,48 @@
+<div class="my-4">
+    <h3>Formulário para agendamento da vacina</h3>
+    <div class="d-flex justify-content-center">
+    <form class="border p-4" [formGroup] = "cadastroAgendamentoForm" (ngSubmit)="onSubmit()">
+        <h6>Informações do paciente</h6>
+        <div class="mb-3">
+            <mat-form-field>
+                <mat-label>Nome</mat-label>
+                <input matInput formControlName="pacienteNome">
+            </mat-form-field>
+        </div>
+        <div class="mb-3">
+            <mat-form-field>
+                <mat-label>Data de nascimento</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="pacienteDataNascimento">
+                <mat-hint>DD/MM/AAAA</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <h6>Data e hora para a vacinação</h6>
+        <div class="mb-3">
+            <mat-form-field>
+                <mat-label>Data</mat-label>
+                <input matInput [matDatepicker]="picker2" formControlName="dataAgendamento">
+                <mat-hint>DD/MM/AAAA</mat-hint>
+                <mat-error>
+                    A data deve ser de hoje em diante.
+                </mat-error>
+                <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="mb-4">
+            <mat-form-field>
+                <mat-label>Horario</mat-label>
+                <input type="time" matInput formControlName="horarioAgendamento">
+                <mat-error>
+                    Deve ser hora em ponto das 06 as 19h.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="mb-3">
+            <button mat-raised-button>Enviar</button>
+        </div>
+    </form>
+    </div>
+</div>

@@ -37,7 +37,7 @@ export class AgendamentoFacade {
         return horarios.map(horario => ({
           ...horario,
           data: new Date(horario.data),
-          // horario: 
+          horario: horario.horario.slice(0, 5) 
         }));
       }),
       catchError(error => {
